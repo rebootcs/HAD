@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donation Completion Form</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --forest: #2e5e4e;
+    --forest-dark: #234a3d;
+    --paper: #faf8f3;
+    --card: #ffffff;
+    --ink: #262420;
+    --muted: #6b675f;
+    --line: #ddd7c9;
+    --accent-wool: #c17a45;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    background-image: linear-gradient(var(--line) 1px, transparent 1px);
+    background-size: 100% 32px;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    padding: 48px 20px 80px;
+  }
+
+  .sheet {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 3px rgba(30, 25, 15, 0.06), 0 12px 32px rgba(30, 25, 15, 0.06);
+    position: relative;
+  }
+
+  .letterhead {
+    background: var(--forest);
+    color: #fff;
+    padding: 36px 44px 30px;
+    border-bottom: 4px solid var(--accent-wool);
+  }
+
+  .letterhead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: 30px;
+    margin: 0 0 6px;
+    letter-spacing: 0.2px;
+  }
+
+  .letterhead p { margin: 0; font-size: 15px; color: #d7e5df; }
+
+  form { padding: 40px 44px 44px; }
+
+  .section { margin-bottom: 34px; }
+
+  .section-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--forest-dark);
+    margin: 0 0 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .field { margin-bottom: 18px; }
+
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .field .hint { font-weight: 400; color: var(--muted); font-size: 12px; }
+
+  input[type="text"], input[type="tel"], input[type="email"], input[type="url"],
+  input[type="number"], textarea {
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    padding: 10px 12px;
+    border: 1px solid #c9c3b4;
+    border-radius: 4px;
+    background: #fffefb;
+    color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  textarea { resize: vertical; min-height: 70px; }
+
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--forest);
+    box-shadow: 0 0 0 3px rgba(46, 94, 78, 0.12);
+  }
+
+  input:invalid:not(:placeholder-shown) { border-color: #b5493f; }
+
+  .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  @media (max-width: 560px) {
+    .columns { grid-template-columns: 1fr; }
+    form { padding: 28px 24px 36px; }
+    .letterhead { padding: 28px 24px 24px; }
+  }
+
+  .item-col { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+
+  .item-col-head {
+    background: #eef3f0;
+    color: var(--forest-dark);
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .item-col-body { padding: 16px; }
+
+  .link-row { display: flex; gap: 8px; align-items: center; }
+  .link-row input { flex: 1; }
+
+  .link-btn {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 4px;
+    border: 1px solid #c9c3b4;
+    background: #fffefb;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .link-btn.active { background: var(--forest); border-color: var(--forest); color: #fff; cursor: pointer; }
+  .link-btn:not(.active) { pointer-events: none; opacity: 0.5; }
+
+  .link-note { font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+
+  .submit-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+
+  .status {
+    font-size: 13px;
+    font-weight: 500;
+    min-height: 18px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .status.ok { color: var(--forest-dark); }
+
+  button.send {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #fff;
+    background: var(--forest);
+    border: none;
+    padding: 13px 28px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    transition: background 0.15s, transform 0.1s, opacity 0.15s;
+  }
+
+  button.send:hover { background: var(--forest-dark); }
+  button.send:active { transform: translateY(1px); }
+  button.send:disabled { opacity: 0.6; cursor: default; }
+  button.send svg { width: 16px; height: 16px; }
+
+  .footnote {
+    margin-top: 26px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .success-screen {
+    position: absolute;
+    inset: 0;
+    background: var(--card);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 40px;
+  }
+
+  .success-screen.show { display: flex; }
+
+  .success-screen .check {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--forest);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+  }
+
+  .success-screen .check svg { width: 28px; height: 28px; color: #fff; }
+
+  .success-screen h2 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 22px;
+    color: var(--forest-dark);
+    margin: 0 0 8px;
+  }
+
+  .success-screen p { color: var(--muted); font-size: 14px; margin: 0 0 24px; max-width: 340px; }
+
+  .success-screen button {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--forest-dark);
+    background: transparent;
+    border: 1px solid var(--line);
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div class="success-screen" id="successScreen">
+    <div class="check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <h2>Submitted</h2>
+    <p>Thanks — this school's completion details were sent. No email to send, nothing else to do.</p>
+    <button type="button" id="submitAnother">Submit another form</button>
+  </div>
+
+  <div class="letterhead">
+    <h1>Donation Completion Form</h1>
+    <p>Socks &amp; Toiletries Drive</p>
+  </div>
+
+  <form id="completionForm">
+
+    <div class="section">
+      <p class="section-title">School Information</p>
+      <div class="field">
+        <label for="schoolName">School Name</label>
+        <input type="text" id="schoolName" required placeholder="e.g. Miami Springs Elementary">
+      </div>
+      <div class="field">
+        <label for="schoolAddress">School Address</label>
+        <input type="text" id="schoolAddress" required placeholder="Street, City, State, ZIP">
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-title">Contact Information</p>
+      <div class="field">
+        <label for="contactName">Contact Name</label>
+        <input type="text" id="contactName" required placeholder="Full name">
+      </div>
+      <div class="field">
+        <label for="contactPhone">Contact Phone Number</label>
+        <input type="tel" id="contactPhone" required placeholder="(305) 555-0123">
+      </div>
+      <div class="field">
+        <label for="contactEmail">Contact Email Address</label>
+        <input type="email" id="contactEmail" required placeholder="name@school.org">
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-title">Items Collected</p>
+      <div class="columns">
+
+        <div class="item-col">
+          <div class="item-col-head">Socks</div>
+          <div class="item-col-body">
+            <div class="field">
+              <label for="socksQty">Quantity Collected</label>
+              <input type="number" id="socksQty" min="0" placeholder="0">
+            </div>
+            <div class="field">
+              <label for="socksLink">Picture Link <span class="hint">(Google Drive, Photos, etc.)</span></label>
+              <div class="link-row">
+                <input type="url" id="socksLink" placeholder="https://...">
+                <a id="socksLinkBtn" class="link-btn" target="_blank" rel="noopener" title="Open link" aria-label="Open socks picture link">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+              <p class="link-note">Paste a shareable link to your photos, then click the icon to verify it opens.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-col">
+          <div class="item-col-head">Toiletries</div>
+          <div class="item-col-body">
+            <div class="field">
+              <label for="toiletriesQty">Quantity Collected</label>
+              <input type="number" id="toiletriesQty" min="0" placeholder="0">
+            </div>
+            <div class="field">
+              <label for="toiletriesLink">Picture Link <span class="hint">(Google Drive, Photos, etc.)</span></label>
+              <div class="link-row">
+                <input type="url" id="toiletriesLink" placeholder="https://...">
+                <a id="toiletriesLinkBtn" class="link-btn" target="_blank" rel="noopener" title="Open link" aria-label="Open toiletries picture link">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+              <p class="link-note">Paste a shareable link to your photos, then click the icon to verify it opens.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-title">Additional Notes</p>
+      <div class="field">
+        <label for="notes">Notes <span class="hint">(optional)</span></label>
+        <textarea id="notes" placeholder="Anything else worth mentioning..."></textarea>
+      </div>
+    </div>
+
+    <div class="submit-row">
+      <span class="status" id="status"></span>
+      <button type="submit" class="send" id="sendBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        Send
+      </button>
+    </div>
+
+    <p class="footnote">
+      Submitting sends this form's details straight to HAD Miami's records in the background —
+      no email app opens and the page doesn't reload.
+    </p>
+
+  </form>
+</div>
+
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+<form id="gformSubmit"
+      action="https://docs.google.com/forms/d/e/1FAIpQLSfBSCVA0_hYsRprUN_AAtXNB9-3XxF5P5SEzUaNl3FeK1Dp-Q/formResponse"
+      method="POST" target="hidden_iframe" style="display:none;">
+  <input type="text" name="entry.133093108" id="g_schoolName">
+  <input type="text" name="entry.505031401" id="g_schoolAddress">
+  <input type="text" name="entry.26015614" id="g_contactName">
+  <input type="text" name="entry.860472302" id="g_contactPhone">
+  <input type="text" name="entry.676463707" id="g_contactEmail">
+  <input type="text" name="entry.1766301156" id="g_socksQty">
+  <input type="text" name="entry.1656437077" id="g_socksLink">
+  <input type="text" name="entry.391300002" id="g_toiletriesQty">
+  <input type="text" name="entry.803274398" id="g_toiletriesLink">
+  <input type="text" name="entry.994701162" id="g_notes">
+</form>
+
+<script>
+  function wireLink(inputId, btnId) {
+    const input = document.getElementById(inputId);
+    const btn = document.getElementById(btnId);
+    function refresh() {
+      const val = input.value.trim();
+      const looksValid = /^https?:\/\/.+/i.test(val);
+      if (looksValid) { btn.classList.add('active'); btn.href = val; }
+      else { btn.classList.remove('active'); btn.removeAttribute('href'); }
+    }
+    input.addEventListener('input', refresh);
+    refresh();
+  }
+  wireLink('socksLink', 'socksLinkBtn');
+  wireLink('toiletriesLink', 'toiletriesLinkBtn');
+
+  const visibleForm = document.getElementById('completionForm');
+  const gform = document.getElementById('gformSubmit');
+  const iframe = document.getElementById('hidden_iframe');
+  const status = document.getElementById('status');
+  const sendBtn = document.getElementById('sendBtn');
+  const successScreen = document.getElementById('successScreen');
+
+  visibleForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!visibleForm.checkValidity()) {
+      visibleForm.reportValidity();
+      return;
+    }
+
+    document.getElementById('g_schoolName').value = document.getElementById('schoolName').value.trim();
+    document.getElementById('g_schoolAddress').value = document.getElementById('schoolAddress').value.trim();
+    document.getElementById('g_contactName').value = document.getElementById('contactName').value.trim();
+    document.getElementById('g_contactPhone').value = document.getElementById('contactPhone').value.trim();
+    document.getElementById('g_contactEmail').value = document.getElementById('contactEmail').value.trim();
+    document.getElementById('g_socksQty').value = document.getElementById('socksQty').value.trim();
+    document.getElementById('g_socksLink').value = document.getElementById('socksLink').value.trim();
+    document.getElementById('g_toiletriesQty').value = document.getElementById('toiletriesQty').value.trim();
+    document.getElementById('g_toiletriesLink').value = document.getElementById('toiletriesLink').value.trim();
+    document.getElementById('g_notes').value = document.getElementById('notes').value.trim();
+
+    sendBtn.disabled = true;
+    status.className = 'status ok';
+    status.textContent = 'Sending…';
+
+    let handled = false;
+    function finish() {
+      if (handled) return;
+      handled = true;
+      sendBtn.disabled = false;
+      status.textContent = '';
+      successScreen.classList.add('show');
+    }
+
+    iframe.addEventListener('load', finish, { once: true });
+    gform.submit();
+    // Fallback in case the iframe load event doesn't fire in time.
+    setTimeout(finish, 2500);
+  });
+
+  document.getElementById('submitAnother').addEventListener('click', function () {
+    visibleForm.reset();
+    document.getElementById('socksLinkBtn').classList.remove('active');
+    document.getElementById('toiletriesLinkBtn').classList.remove('active');
+    successScreen.classList.remove('show');
+  });
+</script>
+
+</body>
+</html>
